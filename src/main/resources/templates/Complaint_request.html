@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make a Complaint - Next-Gen Policing</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <style>
+        :root {
+            --primary-color: #1a237e;
+            --secondary-color: #d32f2f;
+            --light-bg: #f8f9fa;
+            --dark-text: #212121;
+            --light-text: #ffffff;
+            --accent-color: #303f9f;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            padding-bottom: 80px;
+        }
+
+        .navbar {
+            background: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 12px 0;
+        }
+
+        .navbar-brand {
+            color: var(--light-text) !important;
+            font-weight: 700;
+            font-size: 1.4rem;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-link {
+            color: var(--light-text) !important;
+            font-weight: 500;
+            padding: 8px 16px !important;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link.active {
+            background-color: var(--secondary-color);
+        }
+
+        .form-container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            position: relative;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-align: center;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background-color: var(--secondary-color);
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.25rem rgba(48, 63, 159, 0.25);
+        }
+
+        .btn-submit {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            color: var(--light-text);
+            border-radius: 6px;
+            padding: 12px 30px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background-color: #b71c1c;
+            border-color: #b71c1c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-back {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            border-radius: 6px;
+            padding: 12px 24px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-back:hover {
+            background-color: rgba(26, 35, 126, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-group-icon {
+            position: relative;
+        }
+
+        .form-group-icon i {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: var(--primary-color);
+        }
+
+        .form-group-icon .form-control {
+            padding-left: 45px;
+        }
+
+        .form-text {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+
+        footer {
+            background: var(--primary-color);
+            color: var(--light-text);
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            padding: 15px 0;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .location-badge {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 50px;
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .location-badge i {
+            margin-right: 5px;
+        }
+
+        .upload-preview {
+            width: 100%;
+            height: 200px;
+            border-radius: 8px;
+            border: 2px dashed #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .upload-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            display: none;
+        }
+    </style>
+    <script>
+        // JavaScript to get user's location and pre-fill form fields from URL
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    document.getElementById('latitude').value = position.coords.latitude;
+                    document.getElementById('longitude').value = position.coords.longitude;
+                    document.getElementById('locationStatus').style.display = 'inline-flex';
+                }, (error) => {
+                    alert('Unable to retrieve location. Please enable location services.');
+                });
+            } else {
+                alert('Geolocation is not supported by this browser.');
+            }
+        }
+
+        // Function to get URL parameter value
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        window.onload = function() {
+            // Get parameters from the URL
+            const publicId = getUrlParameter('publicId');
+            const name = getUrlParameter('name');
+
+            // Fill the form fields if parameters exist
+            if (publicId) {
+                document.getElementById('public_id').value = publicId;
+            }
+            if (name) {
+                document.getElementById('public_name').value = name;
+            }
+
+            // Call getLocation function to set latitude and longitude
+            getLocation();
+        };
+
+        // Function to preview image before upload
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const output = document.getElementById('imagePreview');
+                output.src = reader.result;
+                output.style.display = 'block';
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <i class="fas fa-shield-alt me-2"></i>
+            Next-Gen Policing
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:history.back()">
+                        <i class="fas fa-arrow-left me-1"></i> Back to Dashboard
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container">
+    <div class="form-container">
+        <h2 class="section-title">File a Complaint</h2>
+
+        <div id="locationStatus" class="location-badge" style="display: none;">
+            <i class="fas fa-map-marker-alt"></i> Location detected successfully
+        </div>
+
+        <form action="/garbage/submit" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <!-- Public Information -->
+                <div class="col-md-6 mb-4">
+                    <div class="form-group-icon mb-3">
+                        <i class="fas fa-user"></i>
+                        <input type="text" class="form-control" id="public_name" name="public_name" placeholder="Your Name" readonly>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="form-group-icon mb-3">
+                        <i class="fas fa-id-card"></i>
+                        <input type="text" class="form-control" id="public_id" name="public_id" placeholder="Public ID" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Complaint Address -->
+            <div class="mb-4">
+                <label for="garbage_address" class="form-label">
+                    <i class="fas fa-map-marked-alt me-2"></i>Complaint Location
+                </label>
+                <textarea class="form-control" id="garbage_address" name="garbage_address" rows="3" placeholder="Please provide detailed address or location of the incident" required></textarea>
+                <div class="form-text">Provide as much detail as possible about the location to help officers locate the issue.</div>
+            </div>
+
+            <!-- Image Upload -->
+            <div class="mb-4">
+                <label for="garbage_image" class="form-label">
+                    <i class="fas fa-camera me-2"></i>Evidence Photo
+                </label>
+                <input type="file" class="form-control" id="garbage_image" name="garbage_image" accept="image/*" required onchange="previewImage(event)">
+                <div class="form-text mb-2">Upload a clear image related to your complaint. Supported formats: JPG, PNG, JPEG.</div>
+
+                <!-- Image Preview -->
+                <div class="upload-preview">
+                    <img id="imagePreview" src="#" alt="Preview">
+                    <span id="previewPlaceholder"><i class="fas fa-image fa-2x text-muted"></i></span>
+                </div>
+            </div>
+
+            <!-- Hidden Latitude and Longitude -->
+            <input type="hidden" id="latitude" name="latitude">
+            <input type="hidden" id="longitude" name="longitude">
+
+            <!-- Submit Buttons -->
+            <div class="d-flex justify-content-between mt-4">
+                <a href="javascript:history.back()" class="btn btn-back">
+                    <i class="fas fa-times me-2"></i>Cancel
+                </a>
+                <button type="submit" class="btn btn-submit">
+                    <i class="fas fa-paper-plane me-2"></i>Submit Complaint
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="text-center py-3">
+    <div class="container">
+        <p class="mb-0">&copy; 2025 Next-Gen Policing. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

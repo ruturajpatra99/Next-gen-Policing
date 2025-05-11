@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Status - Next-Gen Policing</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <style>
+        :root {
+            --primary-color: #1a237e;
+            --secondary-color: #d32f2f;
+            --light-bg: #f8f9fa;
+            --dark-text: #212121;
+            --light-text: #ffffff;
+            --accent-color: #303f9f;
+            --success-color: #2e7d32;
+            --warning-color: #ff9800;
+            --danger-color: #c62828;
+            --info-color: #0288d1;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            padding-bottom: 80px;
+        }
+
+        .navbar {
+            background: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 12px 0;
+        }
+
+        .navbar-brand {
+            color: var(--light-text) !important;
+            font-weight: 700;
+            font-size: 1.4rem;
+            letter-spacing: 0.5px;
+        }
+
+        nav-link {
+            color: rgb(255 255 255);
+            font-weight: 500;
+            padding: 8px 16px !important;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link.active {
+            background-color: var(--secondary-color);
+        }
+
+        .content-container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            position: relative;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-align: center;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background-color: var(--secondary-color);
+        }
+
+        .btn-back {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            border-radius: 6px;
+            padding: 10px 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-back:hover {
+            background-color: rgba(26, 35, 126, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .table-custom {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .table-custom thead {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+        }
+
+        .table-custom th {
+            font-weight: 600;
+            padding: 15px;
+            border: none;
+        }
+
+        .table-custom td {
+            padding: 15px;
+            vertical-align: middle;
+        }
+
+        .table-custom tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .table-custom tbody tr:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .status-badge {
+            padding: 8px 12px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            display: inline-block;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .status-pending {
+            background-color: #fff3e0;
+            color: var(--warning-color);
+        }
+
+        .status-in-progress {
+            background-color: #e3f2fd;
+            color: var(--info-color);
+        }
+
+        .status-completed {
+            background-color: #e8f5e9;
+            color: var(--success-color);
+        }
+
+        .status-rejected {
+            background-color: #ffebee;
+            color: var(--danger-color);
+        }
+
+        .no-data-message {
+            text-align: center;
+            padding: 50px 0;
+            color: #757575;
+        }
+
+        .no-data-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #bdbdbd;
+        }
+
+        .alert-custom {
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            border-left: 5px solid var(--danger-color);
+        }
+
+        footer {
+            background: var(--primary-color);
+            color: var(--light-text);
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            padding: 15px 0;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .id-cell {
+            font-family: 'Consolas', monospace;
+            background-color: rgba(0, 0, 0, 0.02);
+            border-radius: 4px;
+            padding: 5px 10px;
+            font-size: 0.9rem;
+        }
+
+        .refresh-button {
+            background-color: var(--accent-color);
+            color: var(--light-text);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .refresh-button:hover {
+            background-color: var(--primary-color);
+            transform: rotate(180deg);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <i class="fas fa-shield-alt me-2"></i>
+            Next-Gen Policing
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:history.back()">
+                        <i class="fas fa-arrow-left me-1 "></i> Back to Dashboard
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container">
+    <div class="content-container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="section-title mb-0">Complaint Status Tracker</h2>
+            <button class="refresh-button" onclick="window.location.reload()">
+                <i class="fas fa-sync-alt"></i>
+            </button>
+        </div>
+
+        <!-- Error Message -->
+        <div th:if="${error != null}" class="alert alert-custom alert-danger">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-exclamation-circle fa-2x me-3"></i>
+                <div>
+                    <h5 class="mb-1">Error</h5>
+                    <p class="mb-0" th:text="${error}"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Table -->
+        <div class="table-responsive" th:if="${workAssigns != null && !workAssigns.isEmpty()}">
+            <table class="table table-custom table-hover">
+                <thead>
+                <tr>
+                    <th scope="col"><i class="fas fa-hashtag me-2"></i>Assign ID</th>
+                    <th scope="col"><i class="fas fa-file-alt me-2"></i>Complaint ID</th>
+                    <th scope="col"><i class="fas fa-user-shield me-2"></i>Police ID</th>
+                    <th scope="col"><i class="fas fa-tasks me-2"></i>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="work : ${workAssigns}">
+                    <td><span class="id-cell" th:text="${work.assignId}"></span></td>
+                    <td><span class="id-cell" th:text="${work.requestId}"></span></td>
+                    <td><span class="id-cell" th:text="${work.policeId}"></span></td>
+                    <td>
+                        <!-- Dynamic status badge based on status value -->
+                        <span th:class="${'status-badge ' +
+                            (work.status == 'Pending' ? 'status-pending' :
+                             work.status == 'In Progress' ? 'status-in-progress' :
+                             work.status == 'Completed' ? 'status-completed' :
+                             work.status == 'Rejected' ? 'status-rejected' : '')}">
+                            <i th:class="${
+                                work.status == 'Pending' ? 'fas fa-clock me-2' :
+                                work.status == 'In Progress' ? 'fas fa-spinner me-2' :
+                                work.status == 'Completed' ? 'fas fa-check-circle me-2' :
+                                work.status == 'Rejected' ? 'fas fa-times-circle me-2' : ''}"></i>
+                            <span th:text="${work.status}"></span>
+                        </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- No Data Message -->
+        <div th:if="${workAssigns == null || workAssigns.isEmpty()}" class="no-data-message">
+            <div class="no-data-icon">
+                <i class="fas fa-folder-open"></i>
+            </div>
+            <h4>No complaints found</h4>
+            <p class="text-muted">There are no active complaints or requests in the system.</p>
+            <a href="javascript:history.back()" class="btn btn-back mt-3">
+                <i class="fas fa-arrow-left me-2"></i>Return to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="text-center py-3">
+    <div class="container">
+        <p class="mb-0">&copy; 2025 Next-Gen Policing. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

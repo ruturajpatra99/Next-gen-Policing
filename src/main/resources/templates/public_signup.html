@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Signup - Next-Gen Policing</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <style>
+        :root {
+            --primary-color: #1a237e;
+            --secondary-color: #d32f2f;
+            --light-bg: #f8f9fa;
+            --dark-text: #212121;
+            --light-text: #ffffff;
+            --accent-color: #303f9f;
+        }
+
+        @media (min-width: 992px) {
+        .col-lg-8 {
+            flex: 0 0 auto;
+            width: 50%;
+        }
+    }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 12px 0;
+        }
+
+        .navbar-brand {
+            color: var(--light-text) !important;
+            font-weight: 700;
+            font-size: 1.4rem;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-link {
+            color: var(--light-text) !important;
+            font-weight: 500;
+            padding: 8px 16px !important;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link.active {
+            background-color: var(--secondary-color);
+        }
+
+        .signup-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0;
+        }
+
+        .signup-card {
+            border-radius: 16px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            overflow: hidden;
+            max-width: 700px;
+            width: 100%;
+        }
+
+        .signup-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+        }
+
+        .signup-body {
+            padding: 30px;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.2);
+        }
+
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #424242;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--secondary-color), #b71c1c);
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(211, 47, 47, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #c62828, #8e0000);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(211, 47, 47, 0.4);
+        }
+
+        .login-link {
+            color: var(--primary-color);
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .login-link:hover {
+            color: var(--secondary-color);
+        }
+
+        .input-group-text {
+            background-color: transparent;
+            border-right: none;
+        }
+
+        .input-with-icon {
+            border-left: none;
+        }
+
+        .icon-box {
+            width: 70px;
+            height: 70px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            margin-bottom: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .signup-icon {
+            font-size: 30px;
+            color: var(--primary-color);
+        }
+
+        footer {
+            background: var(--primary-color);
+            color: var(--light-text);
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            padding: 15px 0;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .form-select {
+            border-radius: 8px;
+            padding: 12px 15px;
+            height: auto;
+        }
+
+        .progress {
+            height: 8px;
+            margin-top: 5px;
+            border-radius: 4px;
+        }
+
+        .password-strength {
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #757575;
+        }
+
+        .gender-options {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .gender-option {
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .gender-option input[type="radio"] {
+            display: none;
+        }
+
+        .gender-option label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .gender-option input[type="radio"]:checked + label {
+            border-color: var(--primary-color);
+            background-color: rgba(26, 35, 126, 0.05);
+        }
+
+        .gender-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: #757575;
+        }
+
+        .gender-option input[type="radio"]:checked + label .gender-icon {
+            color: var(--primary-color);
+        }
+
+        .terms-text {
+            font-size: 0.9rem;
+            color: #757575;
+        }
+    </style>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <i class="fas fa-shield-alt me-2"></i>
+            Next-Gen Policing
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/#services">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/#about">About</a>
+                </li>
+
+                <!-- Login Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle active" href="#" id="loginDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle me-1"></i> Login
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="loginDropdown">
+                        <li><a class="dropdown-item" href="/public_login"><i class="fas fa-users me-2"></i>Public Login</a></li>
+                        <li><a class="dropdown-item active" href="/public_signup"><i class="fas fa-user-plus me-2"></i>Public Signup</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/Officer_login"><i class="fas fa-user-shield me-2"></i>Police Control Login</a></li>
+                        <li><a class="dropdown-item" href="/Worker_login"><i class="fas fa-user-tie me-2"></i>Police Officer Login</a></li>
+                        <li><a class="dropdown-item" href="/government-login"><i class="fas fa-landmark me-2"></i>Government Login</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Signup Form Section -->
+<section class="signup-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8">
+                <div class="signup-card">
+                    <div class="signup-header">
+                        <div class="icon-box">
+                            <i class="fas fa-user-plus signup-icon"></i>
+                        </div>
+                        <h3 class="mb-2">Create Your Account</h3>
+                        <p class="mb-0">Register for citizen services and complaint filing</p>
+                    </div>
+                    <div class="signup-body">
+                        <form action="/public_signup" method="POST" class="needs-validation" novalidate>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="name" class="form-label">Full Name</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        <input type="text" class="form-control input-with-icon" id="name" name="name" placeholder="Enter your full name" required minlength="3" maxlength="100">
+                                    </div>
+                                    <div class="invalid-feedback">Please enter a valid name (3-100 characters).</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="emailid" class="form-label">Email Address</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                        <input type="email" class="form-control input-with-icon" id="emailid" name="emailid" placeholder="Enter your email address" required>
+                                    </div>
+                                    <div class="invalid-feedback">Please enter a valid email address.</div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="phone" class="form-label">Phone Number</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                        <input type="tel" class="form-control input-with-icon" id="phone" name="phone" placeholder="Enter your phone number" required>
+                                    </div>
+                                    <div class="invalid-feedback">Please enter a valid phone number.</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="dob" class="form-label">Date of Birth</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                        <input type="date" class="form-control input-with-icon" id="dob" name="dob" required>
+                                    </div>
+                                    <div class="invalid-feedback">Please select your date of birth.</div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <div class="input-group password-wrapper">
+                                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                        <input type="password" class="form-control input-with-icon" id="password" name="password" placeholder="Create a password" required minlength="8">
+                                        <span class="password-toggle" onclick="togglePassword('password')">
+                                                <i class="far fa-eye"></i>
+                                            </span>
+                                    </div>
+                                    <div class="progress">
+                                        <div id="password-strength-bar" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                                    </div>
+                                    <div class="password-strength" id="password-strength-text">Password strength</div>
+                                    <div class="invalid-feedback">Password must be at least 8 characters long.</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="confirm-password" class="form-label">Confirm Password</label>
+                                    <div class="input-group password-wrapper">
+                                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                        <input type="password" class="form-control input-with-icon" id="confirm-password" name="confirm-password" placeholder="Confirm your password" required>
+                                        <span class="password-toggle" onclick="togglePassword('confirm-password')">
+                                                <i class="far fa-eye"></i>
+                                            </span>
+                                    </div>
+                                    <div class="invalid-feedback">Passwords do not match.</div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">Gender</label>
+                                <div class="gender-options">
+                                    <div class="gender-option">
+                                        <input type="radio" name="gender" id="male" value="Male" required>
+                                        <label for="male">
+                                            <i class="fas fa-mars gender-icon"></i>
+                                            <span>Male</span>
+                                        </label>
+                                    </div>
+                                    <div class="gender-option">
+                                        <input type="radio" name="gender" id="female" value="Female" required>
+                                        <label for="female">
+                                            <i class="fas fa-venus gender-icon"></i>
+                                            <span>Female</span>
+                                        </label>
+                                    </div>
+                                    <div class="gender-option">
+                                        <input type="radio" name="gender" id="other" value="Other" required>
+                                        <label for="other">
+                                            <i class="fas fa-transgender gender-icon"></i>
+                                            <span>Other</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="invalid-feedback">Please select your gender.</div>
+                            </div>
+
+                            <div class="mb-4 form-check">
+                                <input type="checkbox" class="form-check-input" id="terms" required>
+                                <label class="form-check-label terms-text" for="terms">
+                                    I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                                </label>
+                                <div class="invalid-feedback">You must agree to the terms before registering.</div>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-user-plus me-2"></i>Create Account
+                                </button>
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <p class="mb-0">Already have an account? <a href="/public_login" class="login-link">Login here</a></p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="text-center py-3">
+    <div class="container">
+        <p class="mb-0">&copy; 2025 Next-Gen Policing. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Form validation
+    (function () {
+        'use strict';
+        const forms = document.querySelectorAll('.needs-validation');
+
+        Array.from(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+
+                // Check if passwords match
+                const password = document.getElementById('password');
+                const confirmPassword = document.getElementById('confirm-password');
+
+                if (password.value !== confirmPassword.value) {
+                    confirmPassword.setCustomValidity('Passwords do not match');
+                } else {
+                    confirmPassword.setCustomValidity('');
+                }
+
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+
+    // Password strength checker
+    document.getElementById('password').addEventListener('input', function() {
+        const password = this.value;
+        let strength = 0;
+
+        if (password.length >= 8) strength += 25;
+        if (password.match(/[A-Z]/)) strength += 25;
+        if (password.match(/[0-9]/)) strength += 25;
+        if (password.match(/[^A-Za-z0-9]/)) strength += 25;
+
+        const strengthBar = document.getElementById('password-strength-bar');
+        const strengthText = document.getElementById('password-strength-text');
+
+        strengthBar.style.width = strength + '%';
+
+        if (strength <= 25) {
+            strengthBar.className = 'progress-bar bg-danger';
+            strengthText.innerHTML = 'Weak';
+            strengthText.style.color = '#dc3545';
+        } else if (strength <= 50) {
+            strengthBar.className = 'progress-bar bg-warning';
+            strengthText.innerHTML = 'Fair';
+            strengthText.style.color = '#ffc107';
+        } else if (strength <= 75) {
+            strengthBar.className = 'progress-bar bg-info';
+            strengthText.innerHTML = 'Good';
+            strengthText.style.color = '#0dcaf0';
+        } else {
+            strengthBar.className = 'progress-bar bg-success';
+            strengthText.innerHTML = 'Strong';
+            strengthText.style.color = '#198754';
+        }
+    });
+
+    // Password visibility toggle
+    function togglePassword(id) {
+        const passwordInput = document.getElementById(id);
+        const icon = passwordInput.nextElementSibling.querySelector('i');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+
+    // Check password match on input
+    document.getElementById('confirm-password').addEventListener('input', function() {
+        const password = document.getElementById('password').value;
+        const confirmPassword = this.value;
+
+        if (password !== confirmPassword) {
+            this.setCustomValidity('Passwords do not match');
+        } else {
+            this.setCustomValidity('');
+        }
+    });
+</script>
+</body>
+</html>
